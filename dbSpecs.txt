@@ -1,0 +1,8 @@
+CREATE TABLE users (name VARCHAR(50), password VARCHAR(50) NOT NULL, account_type VARCHAR(50) NOT NULL,PRIMARY KEY (name));
+
+CREATE TABLE products (name VARCHAR(50) NOT NULL,price DECIMAL(6,2) NOT NULL,stock_remaining INT(11) NOT NULL,promotion_rate DOUBLE,category VARCHAR(50) NOT NULL,PRIMARY KEY (name));
+
+CREATE TABLE orders (id INT(11) NOT NULL AUTO_INCREMENT,user_name VARCHAR(50) NOT NULL,status VARCHAR(20) NOT NULL,placed_at DATETIME,money_saved DECIMAL(6,2),price DECIMAL(6,2) NOT NULL,PRIMARY KEY (id),FOREIGN KEY fk_user(user_name) REFERENCES users(name));
+
+CREATE TABLE order_items (order_id INT(11) NOT NULL,product_name VARCHAR(50) NOT NULL,quantity INT(11) NOT NULL,FOREIGN KEY fk_orderID(order_id) REFERENCES orders(id),FOREIGN KEY fk_productName(product_name) REFERENCES products(name));
+
