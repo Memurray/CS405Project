@@ -1,0 +1,55 @@
+html, body {
+  height: 99.5%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  flex: 1 0 auto;
+}
+h1{
+  background-color: #4C4389 ;
+  color:white;
+border-radius: 30px;
+  text-align:center;
+  padding: 4px;
+}
+
+.footer {
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 30px;
+  background-color: #5DADE2;
+}
+
+.footer a {
+  border-radius: 30px;
+  background-color: #2196F3;
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 8px 10px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.footer a:hover {
+  background-color: coral;
+  color: black;
+}
+
+.error{
+color: red;
+}
+
+.b1{
+margin-top: 10px;
+margin-right: 15px;
+}
+
+.form-control{
+margin-bottom: 5px;
+}
+
