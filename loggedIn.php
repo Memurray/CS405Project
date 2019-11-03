@@ -9,26 +9,21 @@
 <body> 
 <div class="main">
 <h1> Login Welcome </h1>
-<?php $cookie_name = "CS405Project";
- if(!isset($_COOKIE[$cookie_name])) {
+<?php 
+$cookie_name1 = "CS405_Username";
+$cookie_name2 = "CS405_Usertype";
+ if(!isset($_COOKIE[$cookie_name1])) {
     echo "<h2>Login cookie has expired, return to homepage.php to log in again.</h2>";
     echo "Cookie named '" . $cookie_name . "' has expired. (cookie lasts 5 seconds right now)";
 
 } else {
-    echo "<h2>Hello " . $_COOKIE[$cookie_name] . ". You have successfully logged in</h2>";
-    echo "Cookie '" . $cookie_name . "' is set!<br>";
-    echo "Right now cookies last 5 seconds, this allows this page to quickly be tested right now <br>";
+    echo "<h2>Hello " . $_COOKIE[$cookie_name1] . ". You have successfully logged in</h2>";
+    echo "Your account type is: " . $_COOKIE[$cookie_name2] . ".<br>";
 }
 ?>
 </div>
-
-<footer class="footer">
-<a href="./homepage.php">Customer Login Page</a>
-<a href="./employeeLogin.php">Employee Login Page</a>
-<?php  
-if(strtolower($_COOKIE[$cookie_name]) == "admin")
-echo "<a href='./dbQuery.php'>Database Query</a>";
- ?>
-</footer>
+<?php
+require('footer.php');
+?>
 
 </body>

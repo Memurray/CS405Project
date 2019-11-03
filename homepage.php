@@ -10,22 +10,11 @@
 <h1>Customer Login/Registration Page </h1>
 Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
-
-ini_set('display_errors',1);
-error_reporting(E_ALL);
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-$servername = 'localhost';
-$username = 'memu225';
-$password = 'Angrysalad592';
-$dbname = 'CS405Project';
-$connection = new mysqli($servername, $username, $password, $dbname);
+include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";
 $bottomError = "";
 $success = "";
-if($connection -> connect_error){
-	echo "Error connecting to database - " + $connection->connect_error;
-}
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $valid = 1;
     if (empty($_POST['username'])){
@@ -40,12 +29,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 	if(!empty($_POST['register'])){
             $username = trim($_POST['username']);
             $usernameCheck = "SELECT * FROM  users WHERE Name = '" . $username . "'"; 
-            $usernameCheckQuery = mysqli_query($connection, $usernameCheck);
-            $usernameCheckCount = mysqli_num_rows($usernameCheckQuery);
-            if ($usernameCheckCount == 0) {
+	    $statement = $connect->prepare($usernameCheck);
+	    $statement->execute();
+	    $result = $statement->fetchAll();
+	    $total_row = $statement->rowCount();
+            if ($total_row == 0) {
             	$password = trim($_POST['password']);
-            	$query = "INSERT INTO users values ('$username', '$password', 'customer')";
-            	$result = mysqli_query($connection, $query);
+            	$query = "INSERT INTO users values ('$username', '$password', 'Customer')";
+		$statement = $connect->prepare($query);
+		$statement->execute();
 	    	$success = "Account successfully created";
         	}
             else
@@ -58,22 +50,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$password = trim($_POST['password']);
  		$usernameCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
                 $usernameCheck = $usernameCheck . " AND user_type = 'customer'";
-            	$usernameCheckQuery = mysqli_query($connection, $usernameCheck);
-            	$usernameCheckCount = mysqli_num_rows($usernameCheckQuery);
-            	if ($usernameCheckCount == 0) {
+                $statement = $connect->prepare($usernameCheck);
+                $statement->execute();
+                $result = $statement->fetchAll();
+                $total_row = $statement->rowCount();
+                if ($total_row == 0) {
 		    $bottomError = "There is no customer account by this name";
 		}
 		else{
 		    $passwordCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
 		    $passwordCheck = $passwordCheck . " AND Password = '" . $password . "'";
                     $passwordCheck = $passwordCheck . " AND user_type = 'customer'";
-	            $passwordCheckQuery = mysqli_query($connection, $passwordCheck);
-        	    $passwordCheckCount = mysqli_num_rows($passwordCheckQuery);
-           	    if ($passwordCheckCount == 0) {
+	            $statement = $connect->prepare($passwordCheck);
+         	    $statement->execute();
+            	    $result = $statement->fetchAll();
+            	    $total_row = $statement->rowCount();
+            	    if ($total_row == 0) {
 		    	$bottomError = "Password is not correct";
 		    }
 		    else{
-			setcookie("CS405Project", $username, time()+5);
+			setcookie("CS405_Username", $username, time()+5);
+			setcookie("CS405_Usertype", "Customer", time()+5);
 			header("Location: ./loggedIn.php");
 		   }
 		}

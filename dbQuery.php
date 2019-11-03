@@ -23,7 +23,7 @@ $val =  trim($_POST['qInput']);
 </form>
 
 <?php
-$connect = new PDO("mysql:host=localhost;dbname=CS405Project", "memu225", "Angrysalad592");
+include('dbConnect.php');
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 if (!empty($_POST['qInput'])) {
 $q = trim($_POST['qInput']);

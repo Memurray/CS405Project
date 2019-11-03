@@ -12,21 +12,11 @@ Note: Employee accounts are exclusively created by admin/manager, can only log i
 <p>Username: Admin <br> Password: Admin <br>Is the only valid employee right now</p>
 Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
-ini_set('display_errors',1);
-error_reporting(E_ALL);
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-$servername = 'localhost';
-$username = 'memu225';
-$password = 'Angrysalad592';
-$dbname = 'CS405Project';
-$connection = new mysqli($servername, $username, $password, $dbname);
+include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";
 $bottomError = "";
 $success = "";
-if($connection -> connect_error){
-	echo "Error connecting to database - " + $connection->connect_error;
-}
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $valid = 1;
     if (empty($_POST['username'])){
@@ -42,22 +32,27 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$password = trim($_POST['password']);
  		$usernameCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
 		$usernameCheck = $usernameCheck ." AND user_type IN ('staff','manager')";
-            	$usernameCheckQuery = mysqli_query($connection, $usernameCheck);
-            	$usernameCheckCount = mysqli_num_rows($usernameCheckQuery);
-            	if ($usernameCheckCount == 0) {
+		$statement = $connect->prepare($usernameCheck);
+		$statement->execute();
+		$result = $statement->fetchAll();
+		$total_row = $statement->rowCount();
+            	if ($total_row == 0) {
 		    $bottomError = "There is no employee account by this name";
 		}
 		else{
 		    $passwordCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
 		    $passwordCheck = $passwordCheck . " AND Password = '" . $password . "'";
 	            $passwordCheck = $passwordCheck . " AND user_type IN ('staff','manager')";
-	            $passwordCheckQuery = mysqli_query($connection, $passwordCheck);
-        	    $passwordCheckCount = mysqli_num_rows($passwordCheckQuery);
-           	    if ($passwordCheckCount == 0) {
+		    $statement = $connect->prepare($passwordCheck);
+                    $statement->execute();
+                    $result = $statement->fetchAll();
+                    $total_row = $statement->rowCount();
+                    if ($total_row == 0) {
 		    	$bottomError = "Password is not correct";
 		    }
 		    else{
-			setcookie("CS405Project", $username, time()+5);
+			setcookie("CS405_Username", $username, time()+600);
+			setcookie("CS405_Usertype", $result[0]['user_type'], time()+600);
 			header("Location: ./loggedIn.php");
 		   }
 		}
