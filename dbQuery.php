@@ -21,7 +21,7 @@ $val =  trim($_POST['qInput']);
 ?>
 <form id="register_form" action="dbQuery.php" method="post">
 <label for="qInput">Query Input: </label>
-<input class="form-control" type="text" name="qInput" value=" <?php echo $val; ?> " id="qInput" maxlength="200" />
+<input type="text" size="100" name="qInput" value=" <?php echo $val; ?> " id="qInput" maxlength="200" />
 <input class="btn btn-default" type="submit" name="submit" value="Process" />
 </form>
 

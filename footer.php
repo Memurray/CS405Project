@@ -10,6 +10,9 @@ if(strtolower($_COOKIE[$cookie_name2]) == "manager")
 echo "<a href='./createEmployee.php'>Employee Account Create</a>";
 if(strtolower($_COOKIE[$cookie_name2]) != "customer")
 echo "<a href='./inventory.php'>Inventory Management</a>";
- ?>
+if(strtolower($_COOKIE[$cookie_name2]) != "customer")
+echo "<a href='./orders.php'>Customer Orders</a>";
+
+?>
 </footer>
 

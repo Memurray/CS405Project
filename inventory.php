@@ -10,6 +10,7 @@
 .add input {
  width: 99%;}
 
+
 </style>
 </head>
 <div class="main">
@@ -19,7 +20,7 @@
 <table border="1">
 <tr>
 <td><b>Product Name</b></td>
-<td><b>Price</b></td>
+<td><b>Base Price ($)</b></td>
 <td><b>Stock Remaining</b></td>
 <td><b>Category</b></td>
 </tr>
@@ -40,13 +41,13 @@
 <br>
 
 <h3>Current Inventory</h3>
-<table border="1" width="100%">
+<table border="1">
 <tr>
 <td><b>Product Name</b></td>
-<td><b>Price</b></td>
-<td><b>Stock Remaining</b></td>
-<td><b>Promotion Rate</b></td>
-<td><b>Category</b></td>
+<td width="120px"><b>Base Price ($)</b></td>
+<td width="130px"><b>Stock Remaining</b></td>
+<td width="160px"><b>Current Discount (%)</b></td>
+<td width="80px"><b>Category</b></td>
 </tr>
 
 
@@ -67,13 +68,16 @@ foreach($result as $row) {
     $price = $row['price'];
     $stock = $row['stock_remaining'];
     $rate = $row['promotion_rate'];
-    if($rate ==  "")
-	$rate = "No promotion";
+    if($rate == "")
+	$rate = 0;
     $cat = $row['category'];
     echo '<td id= n' . $i .'>' . $name . '</td>';
     echo '<td>' . $price . '</td>';
-    echo '<td> <input type="number" onkeypress="return event.charCode >= 48" value =' . $stock . ' min=0 id = t' . $i .  '><button class="stockEdit" val = ' . $i . '>Edit</button></td>';
-    echo '<td>' . $rate . '</td>';
+    echo '<td> <input type="number" style="width: 65px" onkeypress="return event.charCode >= 48" value =' . $stock . ' min="0" id = t' . $i .  '><button class="stockEdit" val = ' . $i . '>Edit</button></td>';
+    if(strtolower($_COOKIE["CS405_Usertype"]) == "manager")
+    	echo '<td> <input type="number" style="width: 45px" onkeypress="return event.charCode >= 48" value =' . $rate . ' min="0" max="100" id = pr' . $i .  '><button class="promoEdit" val = ' . $i . '>Edit</button></td>';
+    else
+	echo '<td>' . $rate . '</td>';
     echo '<td>' . $cat . '</td>';
     echo '</tr>';
     $i = $i+1;
@@ -99,6 +103,24 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('.promoEdit').click(function(){
+        var clickRow = $(this).attr('val');
+        var nameID = "n" + clickRow;
+        var promoID = "pr" + clickRow;
+        var name = document.getElementById(nameID).innerHTML;
+        var promo = document.getElementById(promoID).value;
+        $.ajax({
+            url:"editPromo.php",
+            method:"POST",
+            data:{promo:promo, name:name},
+            complete: function(data){
+                window.location.href='./inventory.php';
+            }
+        });
+    });
+
+
 
 
    $('.addButton').click(function(){
