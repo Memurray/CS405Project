@@ -16,6 +16,15 @@ border-radius: 30px;
   padding: 4px;
 }
 
+h3{
+  background-color: purple ;
+  color:white;
+  border-radius: 30px;
+  text-align:center;
+  padding: 4px;
+}
+
+
 .footer {
   flex-shrink: 0;
   overflow: hidden;

@@ -7,6 +7,9 @@
 
 </head>
 <body>
+<div class="main">
+<img src="https://cdn.discordapp.com/attachments/539230457070354461/641759099318566953/schema.png" style="width:800px;height:192px;border:0;">
+
 <?php
 $val = "SELECT * FROM users;";
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -41,7 +44,7 @@ $statement->execute();
 $result = $statement->fetchAll();
 $total_row = $statement->rowCount();
 if($total_row > 0) {
-echo '<table border="1">';
+echo '<table border="1" width="80%">';
 echo '<tr>';
 $i = 0;
 foreach($result[0] as $key => $value) {
@@ -75,9 +78,9 @@ echo '</table>';
 
 
 }
-
-
-
 ?>
+</div>
+
+<?php require('footer.php'); ?>
 </body>
 </html>
