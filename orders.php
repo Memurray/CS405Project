@@ -16,7 +16,6 @@ float: right;
 </head>
 <div class="main">
 <h1>Customer Orders</h1>
-<h2>Ship it does not currently validate inventory counts</h2>
 <table border="1">
 <tr>
 <td width="130px"><b>Order Number</b></td>
@@ -47,22 +46,33 @@ foreach($result as $row) {
     $time = $row['placed_at'];
     $price = $row['price'];
 
-    $query = "SELECT * FROM order_items WHERE order_id = '" . $id;
-    $query = $query . "';";
+    $query = "SELECT * FROM order_items, products WHERE order_id = " . $id . " AND product_name = name";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result2 = $statement->fetchAll();
 
+    $valid = 1;
+    foreach($result2 as $row2){
+   	if( $row2['stock_remaining'] < $row2['quantity'])
+            $valid = 0;
+    }
+
     echo '<td id= n' . $i .'>' . $id . '</td>';
     echo '<td>' . $name . '</td>';
-    if($status == "Pending")
+    if($status == "Pending" and $valid)
 	echo '<td>' . $status . ' <button class="statusEdit" val = ' . $i . '>Ship It</button></td>';
+    else if($status == "Pending" and !$valid)
+        echo '<td class="error">' . $status . ' (Err:Inventory)</td>';
     else
 	echo '<td>' . $status . '</td>';
     echo '<td>' . $time . '</td>';
     echo '<td>';
+    $valid = 1;
     foreach($result2 as $row2){
-	echo $row2['product_name'] . " x" . $row2['quantity'] . "<br>";
+	if( $row2['stock_remaining'] < $row2['quantity'] and $status == "Pending")
+	    echo "<div class='error'> " . $row2['product_name'] . " x" . $row2['quantity'] ." (Left: " . $row2['stock_remaining'] . ")</div>";
+	else
+	    echo "<div> " . $row2['product_name'] . " x" . $row2['quantity'] ."</div>";
     }
     echo '</td>';
     echo '<td>' . $price . '</td>';
