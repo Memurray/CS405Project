@@ -1,4 +1,4 @@
-CREATE TABLE users (name VARCHAR(50), password VARCHAR(50) NOT NULL, account_type VARCHAR(50) NOT NULL,PRIMARY KEY (name));
+CREATE TABLE users (name VARCHAR(50), password VARCHAR(50) NOT NULL, user_type VARCHAR(50) NOT NULL,PRIMARY KEY (name));
 
 CREATE TABLE products (name VARCHAR(50) NOT NULL,price DECIMAL(6,2) NOT NULL,stock_remaining INT(11) NOT NULL,promotion_rate DOUBLE,category VARCHAR(50) NOT NULL,PRIMARY KEY (name));
 
