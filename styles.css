@@ -9,11 +9,13 @@ body {
   flex: 1 0 auto;
 }
 h1{
+  height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
   background-color: #4C4389 ;
   color:white;
-border-radius: 30px;
+  border-radius: 30px;
   text-align:center;
-  padding: 4px;
 }
 
 h3{
@@ -24,6 +26,28 @@ h3{
   padding: 4px;
 }
 
+.left{
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+h1 a {
+  font-weight: normal;
+  background-color: #585858;
+  display: block;
+  color: white;
+  text-align: center;
+  padding:11px 16px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+h1 a:hover {
+  background-color: #808080;
+}
 
 .footer {
   flex-shrink: 0;

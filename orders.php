@@ -17,7 +17,10 @@ float: right;
 
 <body>
 <div class="main">
-<h1>Customer Orders</h1>
+<?php
+include('header.php');
+new headerBar("Customer Orders");
+?>
 
 <b>Status Filter:</b>
   <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All 

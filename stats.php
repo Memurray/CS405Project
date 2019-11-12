@@ -17,7 +17,10 @@ float: right;
 
 <body>
 <div class="main">
-<h1>Product Sale Statistics</h1>
+<?php
+include('header.php');
+new headerBar("Product Sale Statistics");
+?>
 
 <b>Historical Sales:</b>
   <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All time 

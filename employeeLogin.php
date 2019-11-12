@@ -12,6 +12,8 @@ Note: Employee accounts are exclusively created by admin/manager, can only log i
 <p>Username: Admin <br> Password: Admin <br>Is the only valid employee right now</p>
 Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
+setcookie("CS405_Username", time()-3600);
+setcookie("CS405_Usertype", time()-3600);
 include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";
@@ -51,8 +53,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		    	$bottomError = "Password is not correct";
 		    }
 		    else{
-			setcookie("CS405_Username", $username, time()+600);
-			setcookie("CS405_Usertype", $result[0]['user_type'], time()+600);
+			setcookie("CS405_Username", $username, time()+3600);
+			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600);
 			header("Location: ./loggedIn.php");
 		   }
 		}
@@ -73,7 +75,7 @@ session_start();
 
 <div class="form-group">
 <label for="password">Password:&nbsp  </label>
-<input class="form-control" type="password" name="password" id="password" maxlength="12" />
+<input class="form-control" type="password" name="password" id="password" maxlength="50" />
 <span class="error"> <?php echo $passwordError;?> </span> </div>
 
 <button type="submit" class="b1" name="login" value="1" formaction="./employeeLogin.php">Login</button>

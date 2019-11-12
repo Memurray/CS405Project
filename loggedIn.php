@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
  <head> 
 <title>Logged In</title> 
@@ -8,8 +7,9 @@
 
 <body> 
 <div class="main">
-<h1> Login Welcome </h1>
 <?php 
+include('header.php');
+new headerBar("Login Welcome");
 $cookie_name1 = "CS405_Username";
 $cookie_name2 = "CS405_Usertype";
  if(!isset($_COOKIE[$cookie_name1])) {

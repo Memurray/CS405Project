@@ -8,11 +8,10 @@
 
 <body>
 <div class="main">
-<h1>Employee Account Creation Page </h1>
-Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
-
 
 <?php
+include('header.php');
+new headerBar("Employee Account Creation Page");
 include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";

@@ -14,7 +14,11 @@
 </style>
 </head>
 <div class="main">
-<h1>Inventory Management</h1>
+<?php
+include('header.php');
+new headerBar("Inventory Management");
+?>
+
 <div class="add">
 <h3> Add New Item </h3>
 <table border="1">

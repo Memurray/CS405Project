@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE html>
 <head>
 <title>Customer Homepage</title>
 <link rel="stylesheet" href="styles.css">
@@ -10,6 +10,8 @@
 <h1>Customer Login/Registration Page </h1>
 Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
+setcookie("CS405_Username", time()-3600);
+setcookie("CS405_Usertype", time()-3600);
 include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";
@@ -69,8 +71,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		    	$bottomError = "Password is not correct";
 		    }
 		    else{
-			setcookie("CS405_Username", $username, time()+5);
-			setcookie("CS405_Usertype", "Customer", time()+5);
+			setcookie("CS405_Username", $username, time()+3600);
+			setcookie("CS405_Usertype", "Customer", time()+3600);
 			header("Location: ./loggedIn.php");
 		   }
 		}
@@ -91,7 +93,7 @@ session_start();
 
 <div class="form-group">
 <label for="password">Password:&nbsp  </label>
-<input class="form-control" type="password" name="password" id="password" maxlength="12" />
+<input class="form-control" type="password" name="password" id="password" maxlength="50" />
 <span class="error"> <?php echo $passwordError;?> </span> </div>
 
 <button type="submit" class="b1" name="register" value="1" formaction="./homepage.php">Register</button>
@@ -109,4 +111,3 @@ session_start();
 
 
 </body>
-</html>
