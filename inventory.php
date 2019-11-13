@@ -10,13 +10,18 @@
 .add input {
  width: 99%;}
 
+.sales{
+margin-left: 100px;
+}
 
 </style>
 </head>
+<body>
 <div class="main">
 <?php
 include('header.php');
 new headerBar("Inventory Management","staff");
+$usertype = strtolower($_COOKIE["CS405_Usertype"]);
 ?>
 
 <div class="add">
@@ -45,54 +50,56 @@ new headerBar("Inventory Management","staff");
 <br>
 
 <h3>Current Inventory</h3>
-<table border="1">
-<tr>
-<td><b>Product Name</b></td>
-<td width="120px"><b>Base Price ($)</b></td>
-<td width="130px"><b>Stock Remaining</b></td>
-<td width="160px"><b>Current Discount (%)</b></td>
-<td width="80px"><b>Category</b></td>
-</tr>
 
 
-
-<body>
+<label>Sort By: <select class="select" id="sort">
+<option value="name asc">Name: A-Z</option>
+<option value="name desc">Name: Z-A</option>
+<option value="price asc">Price: Asc</option>
+<option value="price desc">Price: Desc</option>
 <?php
-include('dbConnect.php');
-$query = "SELECT * FROM products";
-$statement = $connect->prepare($query);
-$statement->execute();
-$result = $statement->fetchAll();
-$total_row = $statement->rowCount();
-
-$i=1;
-foreach($result as $row) {
-    echo '<tr>';
-    $name = $row['name'];
-    $price = $row['price'];
-    $stock = $row['stock_remaining'];
-    $rate = $row['promotion_rate'];
-    if($rate == "")
-	$rate = 0;
-    $cat = $row['category'];
-    echo '<td id= n' . $i .'>' . $name . '</td>';
-    echo '<td>' . $price . '</td>';
-    echo '<td> <input type="number" style="width: 65px" onkeypress="return event.charCode >= 48" value =' . $stock . ' min="0" id = t' . $i .  '><button class="stockEdit" val = ' . $i . '>Edit</button></td>';
-    if(strtolower($_COOKIE["CS405_Usertype"]) == "manager")
-    	echo '<td> <input type="number" style="width: 45px" onkeypress="return event.charCode >= 48" value =' . $rate . ' min="0" max="100" id = pr' . $i .  '><button class="promoEdit" val = ' . $i . '>Edit</button></td>';
-    else
-	echo '<td>' . $rate . '</td>';
-    echo '<td>' . $cat . '</td>';
-    echo '</tr>';
-    $i = $i+1;
+if(strtolower($_COOKIE["CS405_Usertype"]) == "manager"){
+    echo '<option value="total_sales asc">Sales: Asc</option>
+      <option value="total_sales desc">Sales: Desc</option>
+    ';
 }
-echo '</table>';
-
 ?>
+</select></label>
+
+<?php
+if(strtolower($_COOKIE["CS405_Usertype"]) == "manager"){
+    echo '<label class="sales">Sales Window: <select class="select" id="sales_window">
+      <option value="All">All Time</option>
+      <option value="7">7 Days</option>
+      <option value="30">1 Month</option>
+      <option value="365">1 Year</option>
+      </select></label>';
+}
+?>
+<br>
+<br>
+
+<div class="inventory">
+</div>
 
 <script>
+var sort = "Name asc";
+var timescale = "All";
+var usertype = "<?php echo $usertype ?>";
 $(document).ready(function(){
-    $('.stockEdit').click(function(){
+    filter();
+    function filter(){
+	$.ajax({
+            url:"buildInventory.php",
+            method:"POST",
+            data:{sort:sort,timescale:timescale},
+            success:function(data){
+	     $('.inventory').html(data);
+            }
+        });
+    }
+
+    $('body').on('click', '.stockEdit', function (){
 	var clickRow = $(this).attr('val');
 	var nameID = "n" + clickRow;
 	var textID = "t" + clickRow;
@@ -103,12 +110,12 @@ $(document).ready(function(){
             method:"POST",
             data:{stock:stock, name:name},
             complete: function(data){
-                window.location.href='./inventory.php';
+                filter();
             }
         });
     });
 
-    $('.promoEdit').click(function(){
+    $('body').on('click', '.promoEdit', function (){
         var clickRow = $(this).attr('val');
         var nameID = "n" + clickRow;
         var promoID = "pr" + clickRow;
@@ -119,12 +126,28 @@ $(document).ready(function(){
             method:"POST",
             data:{promo:promo, name:name},
             complete: function(data){
-                window.location.href='./inventory.php';
+		filter();
             }
         });
     });
 
 
+    $('.select').click(function(){
+	var changed = false;
+	var tempSales = $("#sales_window :selected").val()
+	if(tempSales != timescale && usertype == "manager"){
+		timescale=tempSales;
+		changed = true;
+	}
+        var tempSort = $("#sort :selected").val()
+        if(tempSort != sort){
+	        sort=tempSort;
+                changed = true;
+        }
+	if(changed){
+		filter();
+	}
+    });
 
 
    $('.addButton').click(function(){
@@ -152,7 +175,10 @@ $(document).ready(function(){
             method:"POST",
             data:{name:name, price:price, stock:stock, cat:cat},
             complete: function(data){
-                window.location.href='./inventory.php';
+                filter();
+		document.getElementById("inName").value = "";
+        	document.getElementById("inPrice").value = "";
+        	document.getElementById("inStock").value = "";
             }
             });
 	}
