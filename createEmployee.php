@@ -11,7 +11,7 @@
 
 <?php
 include('header.php');
-new headerBar("Employee Account Creation Page");
+new headerBar("Employee Account Creation Page","manager");
 include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";

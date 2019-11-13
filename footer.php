@@ -16,6 +16,8 @@ if(strtolower($_COOKIE[$cookie_name2]) != "customer")
     echo "<a href='./orders.php'>Customer Orders</a>";
 if(strtolower($_COOKIE[$cookie_name2]) == "manager")
     echo "<a href='./stats.php'>Sales Statistics</a>";
+if(strtolower($_COOKIE[$cookie_name2]) == "customer")
+    echo "<a href='./customerOrders.php'>View Your Orders</a>";
 
 ?>
 </footer>

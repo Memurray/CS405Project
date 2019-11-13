@@ -16,7 +16,7 @@
 <div class="main">
 <?php
 include('header.php');
-new headerBar("Inventory Management");
+new headerBar("Inventory Management","staff");
 ?>
 
 <div class="add">

@@ -19,7 +19,7 @@ float: right;
 <div class="main">
 <?php
 include('header.php');
-new headerBar("Product Sale Statistics");
+new headerBar("Product Sale Statistics","manager");
 ?>
 
 <b>Historical Sales:</b>

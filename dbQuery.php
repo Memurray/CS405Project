@@ -10,7 +10,7 @@
 <div class="main">
 <?php
 include('header.php');
-new headerBar("Database Query");
+new headerBar("Database Query","manager");
 ?>
 
 <img src="https://cdn.discordapp.com/attachments/539230457070354461/641759099318566953/schema.png" style="width:800px;height:192px;border:0;">

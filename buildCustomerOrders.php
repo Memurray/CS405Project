@@ -3,18 +3,23 @@ include('dbConnect.php');
 
 echo '<table border="1"><tr>';
 echo '<td width="130px"><b>Order Number</b></td>';
-echo '<td width="160px"><b>User name</b></td>';
 echo '<td width="160px"><b>Status</b></td>';
 echo '<td width="170px"><b>Time</b></td>';
 echo '<td width="200px"><b>Order Contents</b></td>';
-echo '<td width="160px"><b>Price ($)</b></td></tr>';
+echo '<td width="160px"><b>Price ($)</b></td>';
+echo '<td width="160px"><b>You Saved ($)</b></td></tr>';
 
 $filter = $_POST["category"];
+$uName = $_COOKIE["CS405_Username"];
 
-if($filter == "All")
-	$query = "SELECT * FROM orders WHERE status IN ('Pending','Shipped');";
-else
-	$query = "SELECT * FROM orders WHERE status = 'Pending';";
+if($filter == "All"){
+        $query = "SELECT * FROM orders AS A LEFT JOIN (SELECT id AS vid, 1 as valid FROM orders where status!='Cart' AND placed_at > now()- INTERVAL 1 DAY) AS B on A.id = B.vid WHERE user_name ='";
+        $query = $query . $uName . "' AND status IN ('Shipped','Pending');";
+}
+else{
+	$query = "SELECT * FROM orders AS A LEFT JOIN (SELECT id AS vid, 1 as valid FROM orders where status!='Cart' AND placed_at > now()- INTERVAL 1 DAY) AS B on A.id = B.vid WHERE user_name ='";
+	$query = $query . $uName . "' AND status = '" . $filter . "';";
+}
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
@@ -24,33 +29,26 @@ $i=1;
 foreach($result as $row) {
     echo '<tr>';
     $id = $row['id'];
-    $name = $row['user_name'];
     $status = $row['status'];
     $time = $row['placed_at'];
     $price = $row['price'];
-
+    $saved = $row['money_saved'];
+    $valid = $row['valid'];
+    if($saved == "")
+	$saved = 0;
     $query = "SELECT * FROM order_items, products WHERE order_id = " . $id . " AND product_name = name";
     $statement = $connect->prepare($query);
     $statement->execute();
     $result2 = $statement->fetchAll();
-
-    $valid = 1;
-    foreach($result2 as $row2){
-   	if( $row2['stock_remaining'] < $row2['quantity'])
-            $valid = 0;
-    }
-
     echo '<td id= n' . $i .'>' . $id . '</td>';
-    echo '<td>' . $name . '</td>';
     if($status == "Pending" and $valid)
-	echo '<td>' . $status . ' <button class="statusEdit" val = ' . $i . '>Ship It</button></td>';
-    else if($status == "Pending" and !$valid)
-        echo '<td class="error">' . $status . ' (Err:Inventory)</td>';
+	echo '<td>' . $status . ' <button class="cancelOrder" val = ' . $i . '>Cancel</button></td>';
+    else if($status == "Cancelled")
+        echo '<td>' . $status . ' <button class="restoreOrder right" val = ' . $i . '>Restore</button></td>';
     else
 	echo '<td>' . $status . '</td>';
     echo '<td>' . $time . '</td>';
     echo '<td>';
-    $valid = 1;
     foreach($result2 as $row2){
 	if( $row2['stock_remaining'] < $row2['quantity'] and $status == "Pending")
 	    echo "<div class='error'> " . $row2['product_name'] . " x" . $row2['quantity'] ." (Left: " . $row2['stock_remaining'] . ")</div>";
@@ -59,6 +57,7 @@ foreach($result as $row) {
     }
     echo '</td>';
     echo '<td>' . $price . '</td>';
+    echo '<td>' . $saved . '</td>';
     echo '</tr>';
     $i = $i+1;
 }

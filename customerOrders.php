@@ -12,12 +12,13 @@
 <div class="main">
 <?php
 include('header.php');
-new headerBar("Customer Orders","staff");
+new headerBar("Your Orders","customer");
 ?>
 
 <b>Status Filter:</b>
-  <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All 
-  <input type="radio" name="cat" class="select category" id="radioPending" value="Pending" > Pending<br><br>
+  <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All Active 
+  <input type="radio" name="cat" class="select category" id="radioPending" value="Pending" > Pending
+  <input type="radio" name="cat" class="select category" id="radioCancelled" value="Cancelled" > Cancelled<br><br>
 
 <div class="filter">
 </div>
@@ -29,7 +30,7 @@ $(document).ready(function(){
     filter();
     function filter(){
 	$.ajax({
-            url:"buildOrderDisplay.php",
+            url:"buildCustomerOrders.php",
             method:"POST",
             data:{category:category},
             success:function(data){
@@ -49,12 +50,12 @@ $(document).ready(function(){
 	}
     });
 
-    $('body').on('click', '.statusEdit', function (){
+    $('body').on('click', '.cancelOrder', function (){
 	var clickRow = $(this).attr('val');
 	var idLookup = "n" + clickRow;
 	var id = document.getElementById(idLookup).innerHTML;
 	$.ajax({
-            url:"shipOrder.php",
+            url:"cancelOrder.php",
             method:"POST",
             data:{id:id},
             complete: function(data){
@@ -62,6 +63,21 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('body').on('click', '.restoreOrder', function (){
+        var clickRow = $(this).attr('val');
+        var idLookup = "n" + clickRow;
+        var id = document.getElementById(idLookup).innerHTML;
+        $.ajax({
+            url:"restoreOrder.php",
+            method:"POST",
+            data:{id:id},
+            complete: function(data){
+                filter();
+            }
+        });
+    });
+
 
 });
 </script>

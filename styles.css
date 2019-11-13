@@ -26,12 +26,12 @@ h3{
   padding: 4px;
 }
 
-.left{
-  float: left;
+.cancelOrder, .statusEdit, .right{
+float: right;
 }
 
-.right {
-  float: right;
+.left{
+  float: left;
 }
 
 h1 a {

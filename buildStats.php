@@ -8,9 +8,9 @@ echo '<td width="90px"><b>Items Sold</b></td></tr>';
 $filter = $_POST["category"];
 
 if($filter == "All")
-    $query = "SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and status != 'Cart' GROUP BY product_name order by total_sales desc;";
+    $query = "SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and status IN ('Pending','Shipped') GROUP BY product_name order by total_sales desc;";
 else
-    $query = "SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and placed_at BETWEEN (NOW() - INTERVAL " . $filter .  " DAY) AND NOW() and status != 'Cart' GROUP BY product_name order by total_sales desc;";
+    $query = "SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and placed_at BETWEEN (NOW() - INTERVAL " . $filter .  " DAY) AND NOW() and status IN ('Pending','Shipped') GROUP BY product_name order by total_sales desc;";
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
