@@ -1,6 +1,5 @@
 <?php
 include('dbConnect.php');
-
 echo '<table border="1"><tr>';
 echo '<td width="130px"><b>Order Number</b></td>';
 echo '<td width="160px"><b>Status</b></td>';
@@ -26,6 +25,7 @@ $result = $statement->fetchAll();
 $total_row = $statement->rowCount();
 
 $i=1;
+
 foreach($result as $row) {
     echo '<tr>';
     $id = $row['id'];
