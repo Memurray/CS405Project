@@ -58,7 +58,7 @@ foreach($result as $row) {
 	    echo "<div> " . $row2['product_name'] . " x" . $row2['quantity'] ."</div>";
     }
     echo '</td>';
-    echo '<td>' . $price . '</td>';
+    echo '<td>' . number_format($price,2) . '</td>';
     echo '</tr>';
     $i = $i+1;
 }

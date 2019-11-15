@@ -11,8 +11,9 @@ function orderTotal($order_id) {
 	$quantity = $row['quantity'];
      	$price = $row['price'];
     	$rate = $row['promotion_rate'];
-	$sum = $sum + floor($price * 100 * $quantity)/100;
-	$save = $save + floor($price * $rate * $quantity)/100; 
+        $saveItem = floor($price * $rate)/100;
+        $sum = $sum + $price * $quantity;
+    	$save = $save + $saveItem * $quantity;
     }
     $out['price'] = $sum - $save;
     $out['save'] = $save;

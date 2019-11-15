@@ -4,9 +4,9 @@ echo '<table border="1"><tr>';
 echo '<td width="130px"><b>Order Number</b></td>';
 echo '<td width="160px"><b>Status</b></td>';
 echo '<td width="170px"><b>Time</b></td>';
-echo '<td width="200px"><b>Order Contents</b></td>';
-echo '<td width="160px"><b>Price ($)</b></td>';
-echo '<td width="160px"><b>You Saved ($)</b></td></tr>';
+echo '<td width="300px"><b>Order Contents</b></td>';
+echo '<td width="120px"><b>Price ($)</b></td>';
+echo '<td width="120px"><b>You Saved ($)</b></td></tr>';
 
 $filter = $_POST["category"];
 $uName = $_COOKIE["CS405_Username"];
@@ -56,8 +56,8 @@ foreach($result as $row) {
 	    echo "<div> " . $row2['product_name'] . " x" . $row2['quantity'] ."</div>";
     }
     echo '</td>';
-    echo '<td>' . $price . '</td>';
-    echo '<td>' . $saved . '</td>';
+    echo '<td>' . number_format($price,2) . '</td>';
+    echo '<td>' . number_format($saved,2) . '</td>';
     echo '</tr>';
     $i = $i+1;
 }
