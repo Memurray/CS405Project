@@ -6,14 +6,16 @@ function __construct($title,$permission) {
     $cookie_name2 = "CS405_Usertype";
     $user_type = strtolower($_COOKIE[$cookie_name2]);
 
-    if($permission == "manager" AND $user_type != "manager")
-        header("Location: ./loggedIn.php");
-    if($permission == "staff" AND $user_type == "customer")
-        header("Location: ./loggedIn.php");
-    if($permission == "customer" AND $user_type != "customer")
-        header("Location: ./loggedIn.php");
+    if($user_type != "admin"){
+    	if($permission == "manager" AND $user_type != "manager")
+            header("Location: ./loggedIn.php");
+    	if($permission == "staff" AND $user_type == "customer")
+            header("Location: ./loggedIn.php");
+	if($permission == "customer" AND $user_type != "customer")
+            header("Location: ./loggedIn.php");
+    }
 
-    if($user_type == "customer"){
+    if($user_type == "customer" or $user_type == "admin"){
     	echo '<h1><a class="left outer" href="./loggedIn.php">Home</a>';
 	echo '<a class="left" href="./cart.php">Cart</a>'; 
    	echo $title;

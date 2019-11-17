@@ -11,7 +11,9 @@ echo '
   <td width="80px"><b>Category</b></td>
 ';
 
-if(strtolower($_COOKIE["CS405_Usertype"]) == "manager")
+$uType = strtolower($_COOKIE["CS405_Usertype"]);
+
+if($uType == "manager" || $uType == "admin")
         echo '<td width="60px"><b>Sales</b></td>';
 
 echo '</tr>';
@@ -45,12 +47,12 @@ foreach($result as $row) {
     echo '<td id= n' . $i .'>' . $name . '</td>';
     echo '<td>' . $price . '</td>';
     echo '<td> <input type="number" style="width: 65px" onkeypress="return event.charCode >= 48" value =' . $stock . ' min="0" id = t' . $i .  '><button class="stockEdit" val = ' . $i . '>Edit</button></td>';
-    if(strtolower($_COOKIE["CS405_Usertype"]) == "manager")
+    if($uType == "manager" || $uType == "admin")
         echo '<td> <input type="number" style="width: 45px" onkeypress="return event.charCode >= 48" value =' . $rate . ' min="0" max="100" id = pr' . $i .  '><button class="promoEdit" val = ' . $i . '>Edit</button></td>';
     else
         echo '<td>' . $rate . '</td>';
     echo '<td>' . $cat . '</td>';
-    if(strtolower($_COOKIE["CS405_Usertype"]) == "manager")
+    if($uType == "manager" || $uType == "admin")
         echo '<td>' . $sales . '</td>';
     echo '</tr>';
     $i = $i+1;

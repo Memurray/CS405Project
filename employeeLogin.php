@@ -9,7 +9,7 @@
 <div class="main">
 <h1> Employee Login Page </h1> 
 Note: Employee accounts are exclusively created by admin/manager, can only log in<br>
-<p>Username: Admin <br> Password: Admin <br>Is the only valid employee right now</p>
+<br>
 Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
 setcookie("CS405_Username", time()-3600);
@@ -33,7 +33,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 $username = trim($_POST['username']);
 		$password = trim($_POST['password']);
  		$usernameCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
-		$usernameCheck = $usernameCheck ." AND user_type IN ('staff','manager')";
+		$usernameCheck = $usernameCheck ." AND user_type IN ('staff','manager','admin')";
 		$statement = $connect->prepare($usernameCheck);
 		$statement->execute();
 		$result = $statement->fetchAll();
@@ -44,7 +44,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		else{
 		    $passwordCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
 		    $passwordCheck = $passwordCheck . " AND Password = '" . $password . "'";
-	            $passwordCheck = $passwordCheck . " AND user_type IN ('staff','manager')";
+	            $passwordCheck = $passwordCheck . " AND user_type IN ('staff','manager', 'admin')";
 		    $statement = $connect->prepare($passwordCheck);
                     $statement->execute();
                     $result = $statement->fetchAll();
@@ -62,7 +62,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 
-session_start();
 ?>
 
 <form id="landing" method="post">

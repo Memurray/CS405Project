@@ -16,7 +16,7 @@ new headerBar("Your Orders","customer");
 ?>
 
 <b>Status Filter:</b>
-  <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All Active 
+  <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All Purchased 
   <input type="radio" name="cat" class="select category" id="radioPending" value="Pending" > Pending
   <input type="radio" name="cat" class="select category" id="radioCancelled" value="Cancelled" > Cancelled<br><br>
 

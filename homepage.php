@@ -51,7 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 $username = trim($_POST['username']);
 		$password = trim($_POST['password']);
  		$usernameCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
-                $usernameCheck = $usernameCheck . " AND user_type = 'customer'";
+                $usernameCheck = $usernameCheck . " AND user_type IN('customer','admin');";
                 $statement = $connect->prepare($usernameCheck);
                 $statement->execute();
                 $result = $statement->fetchAll();
@@ -62,7 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		else{
 		    $passwordCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
 		    $passwordCheck = $passwordCheck . " AND Password = '" . $password . "'";
-                    $passwordCheck = $passwordCheck . " AND user_type = 'customer'";
+                    $passwordCheck = $passwordCheck . " AND user_type in ('customer','admin');";
 	            $statement = $connect->prepare($passwordCheck);
          	    $statement->execute();
             	    $result = $statement->fetchAll();
@@ -72,15 +72,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		    }
 		    else{
 			setcookie("CS405_Username", $username, time()+3600);
-			setcookie("CS405_Usertype", "Customer", time()+3600);
+			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600);
 			header("Location: ./loggedIn.php");
 		   }
 		}
 	}
     }
 }
-
-session_start();
 ?>
 
 <form id="landing" method="post">

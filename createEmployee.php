@@ -47,7 +47,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             	$bottomError = "That username has already been taken.";
     }
 }
-session_start();
 ?>
 
 <form id="input" method="post">

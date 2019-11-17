@@ -58,7 +58,7 @@ $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 <option value="price asc">Price: Asc</option>
 <option value="price desc">Price: Desc</option>
 <?php
-if(strtolower($_COOKIE["CS405_Usertype"]) == "manager"){
+if($usertype == "manager" or $usertype == "admin"){
     echo '<option value="total_sales asc">Sales: Asc</option>
       <option value="total_sales desc">Sales: Desc</option>
     ';
@@ -67,7 +67,7 @@ if(strtolower($_COOKIE["CS405_Usertype"]) == "manager"){
 </select></label>
 
 <?php
-if(strtolower($_COOKIE["CS405_Usertype"]) == "manager"){
+if($usertype == "manager" or $usertype == "admin"){
     echo '<label class="sales">Sales Window: <select class="select" id="sales_window">
       <option value="All">All Time</option>
       <option value="7">7 Days</option>
@@ -135,7 +135,7 @@ $(document).ready(function(){
     $('.select').click(function(){
 	var changed = false;
 	var tempSales = $("#sales_window :selected").val()
-	if(tempSales != timescale && usertype == "manager"){
+	if(tempSales != timescale && (usertype == "manager" || usertype == "admin")){
 		timescale=tempSales;
 		changed = true;
 	}
