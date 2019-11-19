@@ -1,10 +1,12 @@
 <?php
 $sort = $_POST["sort"];
 $time = $_POST["timescale"];
+$filter = $_POST["filterType"];
+$searchInput = $_POST["searchInput"];
 echo '
   <table border="1">
   <tr>
-  <td><b>Product Name</b></td>
+  <td width="200px"><b>Product Name</b></td>
   <td width="120px"><b>Base Price ($)</b></td>
   <td width="130px"><b>Stock Remaining</b></td>
   <td width="160px"><b>Current Discount (%)</b></td>
@@ -23,6 +25,15 @@ if($time == "All")
     $query = "SELECT * FROM products as A LEFT JOIN (SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and status IN ('Pending','Shipped') GROUP BY product_name) AS B ON A.name = B.product_name";
 else
     $query = "SELECT * FROM products as A LEFT JOIN (SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and placed_at BETWEEN (NOW() - INTERVAL " . $time .  " DAY) AND NOW() and status IN ('Pending','Shipped') GROUP BY product_name) AS B ON A.name = B.product_name";
+
+
+$query .= " WHERE (name LIKE '%" . $searchInput . "%'";
+$query .= " OR category LIKE '%" . $searchInput . "%')";
+
+if($filter != "All"){
+    $query .= " AND category = '" . $filter;
+    $query .= "'";
+}
 
 $query .= " ORDER BY " . $sort . ", name asc;";
 

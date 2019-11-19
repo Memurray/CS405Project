@@ -3,6 +3,7 @@
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>Inventory</title>
 
 <link rel="stylesheet" href="styles.css">
@@ -10,9 +11,10 @@
 .add input {
  width: 99%;}
 
-.sales{
+.pad{
 margin-left: 100px;
 }
+
 
 </style>
 </head>
@@ -50,7 +52,11 @@ $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 <br>
 
 <h3>Current Inventory</h3>
-
+<div class="search-container">
+      <input type="text" class="textbox" placeholder="Search.." name="search" id="searchBox">
+      <button id="buttonSearchBox"><i class="fa fa-search"></i></button>
+  </div>
+<br>
 
 <label>Sort By: <select class="select" id="sort">
 <option value="name asc">Name: A-Z</option>
@@ -66,9 +72,16 @@ if($usertype == "manager" or $usertype == "admin"){
 ?>
 </select></label>
 
+<label class="pad" >Show: <select class="select" id="filterID">
+<option value="All">All</option>
+<option value="Toy">Only Toys</option>
+<option value="Book">Only Books</option>
+</select></label>
+
+
 <?php
 if($usertype == "manager" or $usertype == "admin"){
-    echo '<label class="sales">Sales Window: <select class="select" id="sales_window">
+    echo '<label class="pad">Sales Window: <select class="select" id="sales_window">
       <option value="All">All Time</option>
       <option value="7">7 Days</option>
       <option value="30">1 Month</option>
@@ -86,13 +99,15 @@ if($usertype == "manager" or $usertype == "admin"){
 var sort = "Name asc";
 var timescale = "All";
 var usertype = "<?php echo $usertype ?>";
+var filterType = "All";
+var searchInput = "";
 $(document).ready(function(){
     filter();
     function filter(){
-	$.ajax({
+        $.ajax({
             url:"buildInventory.php",
             method:"POST",
-            data:{sort:sort,timescale:timescale},
+            data:{sort:sort,timescale:timescale,filterType:filterType,searchInput:searchInput},
             success:function(data){
 	     $('.inventory').html(data);
             }
@@ -131,23 +146,44 @@ $(document).ready(function(){
         });
     });
 
-
     $('.select').click(function(){
 	var changed = false;
-	var tempSales = $("#sales_window :selected").val()
+	var tempSales = $("#sales_window :selected").val();
 	if(tempSales != timescale && (usertype == "manager" || usertype == "admin")){
 		timescale=tempSales;
 		changed = true;
 	}
-        var tempSort = $("#sort :selected").val()
+        var tempSort = $("#sort :selected").val();
         if(tempSort != sort){
 	        sort=tempSort;
                 changed = true;
         }
+
+        var tempFilter = $("#filterID :selected").val();
+        if(tempFilter != filterType){
+                filterType = tempFilter;
+                changed = true;
+        }
+
 	if(changed){
 		filter();
 	}
     });
+
+
+    $("#buttonSearchBox").click(function(){
+	searchSubmit();
+    });
+
+    $("#searchBox").keypress(function(){
+  	if ( event.which == 13 ) {
+    	    searchSubmit();
+        }
+    });
+    function searchSubmit(){
+   	searchInput = document.getElementById("searchBox").value;
+	filter();
+    }
 
 
    $('.addButton').click(function(){
