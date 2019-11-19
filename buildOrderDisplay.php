@@ -12,9 +12,10 @@ echo '<td width="160px"><b>Price ($)</b></td></tr>';
 $filter = $_POST["category"];
 
 if($filter == "All")
-	$query = "SELECT * FROM orders WHERE status IN ('Pending','Shipped');";
+	$query = "SELECT * FROM orders WHERE status IN ('Pending','Shipped')";
 else
-	$query = "SELECT * FROM orders WHERE status = 'Pending';";
+	$query = "SELECT * FROM orders WHERE status = 'Pending'";
+$query .= " ORDER BY placed_at desc";
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();

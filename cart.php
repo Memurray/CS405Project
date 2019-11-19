@@ -39,6 +39,7 @@ else {
   $result = $statement->fetchAll();
   $sum = 0;
   $save = 0;
+  $i=1;
   foreach($result as $row){
     $name = $row['product_name'];
     $quantity = $row['quantity'];
@@ -48,11 +49,12 @@ else {
     $realPrice = $price-$saveItem;
     $sum = $sum + $price * $quantity;
     $save = $save + $saveItem * $quantity;
-    echo '<tr><td>' . $name . '</td>';
-    echo '<td>' . $quantity . '</td>';
+    echo '<tr><td id= n' . $i .'>' . $name . '</td>';
+    echo '<td> <input type="number" style="width: 65px" onkeypress="return event.charCode >= 48" value =' . $quantity . ' min="0" id = t' . $i .  '><button class="quantityEdit" val = ' . $i . '>Edit</button></td>';
     echo '<td>' . number_format($realPrice,2) . '</td>';
     echo '<td class="highlight">' . number_format($realPrice*$quantity,2) . '</td>';
     echo '</tr>';
+    $i = $i+1;
   }
   echo '</table>';
   echo "<br>Savings: $" . number_format($save,2) . "<br>";
@@ -69,7 +71,25 @@ else {
 var id = "<?php echo $id ?>";
 var price = "<?php echo $sum-$save ?>";
 var save = "<?php echo $save ?>";
+
 $(document).ready(function(){
+    $('.quantityEdit').click(function(){
+	var clickRow = $(this).attr('val');
+	var nameID = "n" + clickRow;
+	var textID = "t" + clickRow;
+	var name = document.getElementById(nameID).innerHTML;
+	var quantity = document.getElementById(textID).value;
+	$.ajax({
+            url:"editCart.php",
+            method:"POST",
+            data:{quantity:quantity, name:name,id:id},
+            complete: function(data){
+                window.location = './cart.php';
+            }
+        });
+    });
+
+
     $('.order').click(function(){
 	$.ajax({
             url:"purchaseCart.php",

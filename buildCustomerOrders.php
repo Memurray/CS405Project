@@ -13,12 +13,13 @@ $uName = $_COOKIE["CS405_Username"];
 
 if($filter == "All"){
         $query = "SELECT * FROM orders AS A LEFT JOIN (SELECT id AS vid, 1 as valid FROM orders where status!='Cart' AND placed_at > now()- INTERVAL 1 DAY) AS B on A.id = B.vid WHERE user_name ='";
-        $query = $query . $uName . "' AND status IN ('Shipped','Pending');";
+        $query = $query . $uName . "' AND status IN ('Shipped','Pending')";
 }
 else{
 	$query = "SELECT * FROM orders AS A LEFT JOIN (SELECT id AS vid, 1 as valid FROM orders where status!='Cart' AND placed_at > now()- INTERVAL 1 DAY) AS B on A.id = B.vid WHERE user_name ='";
-	$query = $query . $uName . "' AND status = '" . $filter . "';";
+	$query = $query . $uName . "' AND status = '" . $filter . "'";
 }
+$query .= " ORDER BY placed_at desc";
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
