@@ -12,8 +12,6 @@ Note: Employee accounts are exclusively created by admin/manager, can only log i
 <br>
 Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
-setcookie("CS405_Username", time()-3600);
-setcookie("CS405_Usertype", time()-3600);
 include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";
@@ -53,8 +51,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		    	$bottomError = "Password is not correct";
 		    }
 		    else{
-			setcookie("CS405_Username", $username, time()+3600);
-			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600);
+			setcookie("CS405_Username", $username, time()+3600, '/');
+			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600, '/');
 			header("Location: ./loggedIn.php");
 		   }
 		}

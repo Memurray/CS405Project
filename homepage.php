@@ -10,8 +10,6 @@
 <h1>Customer Login/Registration Page </h1>
 Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
-setcookie("CS405_Username", time()-3600);
-setcookie("CS405_Usertype", time()-3600);
 include('dbConnect.php');
 $usernameError = "";
 $passwordError = "";
@@ -71,9 +69,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		    	$bottomError = "Password is not correct";
 		    }
 		    else{
-			setcookie("CS405_Username", $username, time()+3600);
-			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600);
-			header("Location: ./loggedIn.php");
+			setcookie("CS405_Username", $username, time()+3600, '/');
+			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600, '/');
+			header("Location: ./shop.php");
 		   }
 		}
 	}

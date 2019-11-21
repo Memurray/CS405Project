@@ -12,7 +12,7 @@
 <div class="main">
 <?php
 include('header.php');
-new headerBar("Customer Orders","staff");
+headerBar("Customer Orders","staff");
 ?>
 
 <b>Status Filter:</b>

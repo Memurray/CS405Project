@@ -22,7 +22,7 @@ margin-left: 100px;
 <div class="main">
 <?php
 include('header.php');
-new headerBar("Inventory Management","staff");
+headerBar("Inventory Management","staff");
 $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 ?>
 
@@ -130,6 +130,27 @@ $(document).ready(function(){
         });
     });
 
+   $('body').on('keypress', '.stockBox', function (){
+     if ( event.which == 13 ) {
+	var enterID = $(this).attr('Id');
+ 	var clickRow = enterID.replace("t", "");
+	var nameID = "n" + clickRow;
+        var textID = "t" + clickRow;
+        var name = document.getElementById(nameID).innerHTML;
+        var stock = document.getElementById(textID).value;
+        $.ajax({
+            url:"editStock.php",
+            method:"POST",
+            data:{stock:stock, name:name},
+            complete: function(data){
+                filter();
+            }
+        });
+
+      }
+    });
+
+
     $('body').on('click', '.promoEdit', function (){
         var clickRow = $(this).attr('val');
         var nameID = "n" + clickRow;
@@ -145,6 +166,27 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('body').on('keypress', '.promoBox', function (){
+     if ( event.which == 13 ) {
+        var enterID = $(this).attr('Id');
+        var clickRow = enterID.replace("pr", "");
+	var nameID = "n" + clickRow;
+        var promoID = "pr" + clickRow;
+        var name = document.getElementById(nameID).innerHTML;
+        var promo = document.getElementById(promoID).value;
+        $.ajax({
+            url:"editPromo.php",
+            method:"POST",
+            data:{promo:promo, name:name},
+            complete: function(data){
+                filter();
+            }
+        });
+      }
+    });
+
+
 
     $('.select').click(function(){
 	var changed = false;
