@@ -29,8 +29,8 @@ $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 <label>Sort By: <select class="select" id="sort">
 <option value="name asc">Name: A-Z</option>
 <option value="name desc">Name: Z-A</option>
-<option value="price asc">Price: Asc</option>
-<option value="price desc">Price: Desc</option>
+<option value="(price*(100-promotion_rate)) asc">Price: Asc</option>
+<option value="(price*(100-promotion_rate)) desc">Price: Desc</option>
 </select></label>
 
 <br>

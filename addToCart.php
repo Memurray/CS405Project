@@ -63,18 +63,4 @@ function insertCart($result,$pName,$quantity){
                 echo "Item quantity was not successfully updated.";
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ?>

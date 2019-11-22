@@ -1,3 +1,4 @@
+<br>
 <footer class="footer">
 <?php
 $cookie_name1 = "CS405_Username";
