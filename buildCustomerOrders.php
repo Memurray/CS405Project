@@ -41,13 +41,22 @@ foreach($result as $row) {
     $statement = $connect->prepare($query);
     $statement->execute();
     $result2 = $statement->fetchAll();
+    $v = 1;
+    $printStatus = $status;
+    foreach($result2 as $row2){
+   	if( $row2['stock_remaining'] < $row2['quantity'])
+            $v = 0;
+    }
+    if($status == "Pending" and $v == 0)
+	$printStatus = "<label class='error'>Backordered </label>";
+
     echo '<td id= n' . $i .'>' . $id . '</td>';
     if($status == "Pending" and $valid)
-	echo '<td>' . $status . ' <button class="cancelOrder" val = ' . $i . '>Cancel</button></td>';
+	echo '<td>' . $printStatus . ' <button class="cancelOrder" val = ' . $i . '>Cancel</button></td>';
     else if($status == "Cancelled")
-        echo '<td>' . $status . ' <button class="restoreOrder right" val = ' . $i . '>Restore</button></td>';
+        echo '<td>' . $printStatus . ' <button class="restoreOrder right" val = ' . $i . '>Restore</button></td>';
     else
-	echo '<td>' . $status . '</td>';
+	echo '<td>' . $printStatus . '</td>';
     echo '<td>' . $time . '</td>';
     echo '<td>';
     foreach($result2 as $row2){
