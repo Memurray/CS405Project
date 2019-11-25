@@ -47,7 +47,7 @@ $(document).ready(function(){
     filter();
     function filter(){
 	$.ajax({
-            url:"buildShop.php",
+            url:"buildShop2.php",
             method:"POST",
             data:{sort:sort,timescale:timescale},
             success:function(data){
