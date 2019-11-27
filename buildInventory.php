@@ -46,9 +46,10 @@ echo '
 
 $uType = strtolower($_COOKIE["CS405_Usertype"]);
 
-if($uType == "manager" || $uType == "admin")
+if($uType == "manager" || $uType == "admin"){
         echo '<td width="60px"><b>Sales</b></td>';
-
+	echo '<td width="90px"><b>Sales Graph</b></td>';
+}
 echo '</tr>';
 
 include('dbConnect.php');
@@ -102,8 +103,11 @@ foreach($result as $row) {
     else
         echo '<td>' . $rate . '</td>';
     echo '<td>' . $cat . '</td>';
-    if($uType == "manager" || $uType == "admin")
+    if($uType == "manager" || $uType == "admin"){
         echo '<td>' . $sales . '</td>';
+        echo "<td><a href='./chart.php?name=" . $name;
+	echo "'>Link</a></td>";
+    }
     echo '</tr>';
     $i = $i+1;
 }

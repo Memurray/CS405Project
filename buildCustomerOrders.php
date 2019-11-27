@@ -51,7 +51,7 @@ foreach($result as $row) {
 	$printStatus = "<label class='error'>Backordered </label>";
 
     echo '<td id= n' . $i .'>' . $id . '</td>';
-    if($status == "Pending" and $valid)
+    if($status == "Pending" and ($valid or $v==0))
 	echo '<td>' . $printStatus . ' <button class="cancelOrder" val = ' . $i . '>Cancel</button></td>';
     else if($status == "Cancelled")
         echo '<td>' . $printStatus . ' <button class="restoreOrder right" val = ' . $i . '>Restore</button></td>';

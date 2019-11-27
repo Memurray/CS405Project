@@ -96,11 +96,15 @@ if($usertype == "manager" or $usertype == "admin"){
 </div>
 
 <script>
-var sort = "Name asc";
-var timescale = "All";
 var usertype = "<?php echo $usertype ?>";
-var filterType = "All";
-var searchInput = "";
+
+var timescale = "All";
+if($("#sales_window :selected").val() != null)
+    timescale = $("#sales_window :selected").val();
+var sort = $("#sort :selected").val();
+var filterType = $("#filterID :selected").val();
+var searchInput = document.getElementById("searchBox").value;
+
 $(document).ready(function(){
     filter();
     function filter(){
