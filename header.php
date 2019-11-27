@@ -8,8 +8,10 @@ function headerBar($title,$permission) {
     $uName = $_COOKIE[$cookie_name1];
 
     if($user_type != "admin"){
-    	if($permission == "manager" AND $user_type != "manager")
+    	if($permission == "manager" AND $user_type == "staff")
             header("Location: ./loggedIn.php");
+	if($permission == "manager" AND $user_type == "customer")
+            header("Location: ./shop.php");
     	if($permission == "staff" AND $user_type == "customer")
             header("Location: ./shop.php");
 	if($permission == "customer" AND $user_type != "customer")

@@ -24,6 +24,11 @@ background: #DCDCDC;
   margin: 10px;
 }
 
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+
 .card button {
   height: 27px;
   border: none;
