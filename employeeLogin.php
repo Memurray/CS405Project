@@ -8,9 +8,6 @@
 <body>
 <div class="main">
 <h1> Employee Login Page </h1> 
-Note: Employee accounts are exclusively created by admin/manager, can only log in<br>
-<br>
-Members: Michael Murray, Craig Scarboro, Thomas Stokes <br><br>
 <?php
 include('dbConnect.php');
 $usernameError = "";
@@ -57,36 +54,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		   }
 		}
 	}
-
 }
-
 ?>
 
-<form id="landing" method="post">
-<fieldset>
-<legend>Registration/Login</legend>
+<form class="form-style" id="landing" method="post">
+<ul>
+<li>
 <div class="form-group">
-<label for="Username">Username: </label>
-<input class="form-control" type="text" name="username" id="username" maxlength="50" />
+<label for="Username">Username</label>
+<input class="field-style field-full align-none" type="text" name="username" id="username" maxlength="50" placeholder="Username"/>
 <span class="error"> <?php echo $usernameError;?> </span> </div>
+</li>
 
+<li>
 <div class="form-group">
-<label for="password">Password:&nbsp  </label>
-<input class="form-control" type="password" name="password" id="password" maxlength="50" />
+<label for="password">Password</label>
+<input class="field-style field-full align-none" type="password" name="password" id="password" maxlength="50" placeholder="Password" />
 <span class="error"> <?php echo $passwordError;?> </span> </div>
+</li>
 
+<li>
 <button type="submit" class="b1" name="login" value="1" formaction="./employeeLogin.php">Login</button>
-</fieldset>
-</form>
-
 <span class="error"> <?php echo $bottomError ?> </span>
 <?php echo $success ?>
+
+</li>
+</ul>
+</form>
 </div>
 
 <footer class="footer">
 <a href="./homepage.php">Customer Login Page</a>
 </footer>
-
 
 </body>
 </html>

@@ -6,11 +6,14 @@
 
 .card h2 {
 font-size: 20px;
-padding-top:10px;
+padding-top: 10px;
 height: 58px;
 margin-top: 0px;
 margin-bottom: 10px;
-background: #DCDCDC;
+background: #435e89;
+color: white;
+border-radius:20px 20px 0px 0px;
+
 }
 
 .card {
@@ -20,8 +23,10 @@ background: #DCDCDC;
   max-width: 200px;
   min-width: 200px;
   text-align: center;
-  padding-top: 1px;
   margin: 10px;
+  padding-top: 0px;
+  border-radius: 25px;
+border: 3px solid black;
 }
 
 .card:hover {
@@ -39,6 +44,10 @@ background: #DCDCDC;
   cursor: pointer;
   box-sizing: border-box;
   font-size: 18px;
+}
+
+.card button:hover {
+  background-color: #808080;
 }
 
 .cartIn {
