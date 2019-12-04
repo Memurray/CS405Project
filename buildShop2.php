@@ -26,11 +26,12 @@ border-radius:20px 20px 0px 0px;
   margin: 10px;
   padding-top: 0px;
   border-radius: 25px;
-border: 3px solid black;
+  border: 3px solid black;
 }
 
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.2);
+  border: 3px solid 	#585858;
 }
 
 
@@ -66,10 +67,17 @@ img {
 
 <?php
 $sort = $_POST["sort"];
+$filter = $_POST["filterType"];
+$searchInput = $_POST["searchInput"];
 $uType = strtolower($_COOKIE["CS405_Usertype"]);
-
 include('dbConnect.php');
 $query = "SELECT * FROM products as A LEFT JOIN (SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and status IN ('Pending','Shipped') GROUP BY product_name) AS B ON A.name = B.product_name";
+$query .= " WHERE (name LIKE '%" . $searchInput . "%'";
+$query .= " OR category LIKE '%" . $searchInput . "%')";
+if($filter != "All"){
+    $query .= " AND category = '" . $filter;
+    $query .= "'";
+}
 $query .= " ORDER BY " . $sort . ", name asc;";
 $statement = $connect->prepare($query);
 $statement->execute();
