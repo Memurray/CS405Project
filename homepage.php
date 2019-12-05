@@ -70,7 +70,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		    else{
 			setcookie("CS405_Username", $username, time()+3600, '/');
 			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600, '/');
-			header("Location: ./shop.php");
+			header("Location: ./storefront.php");
 		   }
 		}
 	}

@@ -11,15 +11,15 @@ function headerBar($title,$permission) {
     	if($permission == "manager" AND $user_type == "staff")
             header("Location: ./loggedIn.php");
 	if($permission == "manager" AND $user_type == "customer")
-            header("Location: ./shop.php");
+            header("Location: ./storefront.php");
     	if($permission == "staff" AND $user_type == "customer")
-            header("Location: ./shop.php");
+            header("Location: ./storefront.php");
 	if($permission == "customer" AND $user_type != "customer")
             header("Location: ./loggedIn.php");
     }
 
     if($user_type == "customer" or $user_type == "admin"){
-    	echo '<h1><a class="left outer" href="./shop.php">Home</a>';
+    	echo '<h1><a class="left outer" href="./storefront.php">Home</a>';
 	echo '<a class="left" href="./cart.php">Cart</a>'; 
    	echo $title;
     	echo '<a class="right outer" href="./homepage.php" onclick="logout()">Logout</a>';

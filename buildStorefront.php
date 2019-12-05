@@ -71,7 +71,7 @@ $filter = $_POST["filterType"];
 $searchInput = $_POST["searchInput"];
 $uType = strtolower($_COOKIE["CS405_Usertype"]);
 include('dbConnect.php');
-$query = "SELECT * FROM products as A LEFT JOIN (SELECT product_name, sum(quantity) as total_sales FROM orders, order_items where id=order_id and status IN ('Pending','Shipped') GROUP BY product_name) AS B ON A.name = B.product_name";
+$query = "SELECT * FROM products";
 $query .= " WHERE (name LIKE '%" . $searchInput . "%'";
 $query .= " OR category LIKE '%" . $searchInput . "%')";
 if($filter != "All"){
