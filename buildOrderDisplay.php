@@ -10,12 +10,15 @@ echo '<td width="200px"><b>Order Contents</b></td>';
 echo '<td width="160px"><b>Price ($)</b></td></tr>';
 
 $filter = $_POST["category"];
-
+$sort = $_POST["sort"];
+$searchInput = $_POST["searchInput"];
 if($filter == "All")
 	$query = "SELECT * FROM orders WHERE status IN ('Pending','Shipped')";
 else
 	$query = "SELECT * FROM orders WHERE status = 'Pending'";
-$query .= " ORDER BY placed_at desc";
+$query .= " AND (user_name LIKE '%" . $searchInput . "%'";
+$query .= " OR status LIKE '%" . $searchInput . "%')";
+$query .= " ORDER BY $sort";
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
@@ -23,7 +26,6 @@ $total_row = $statement->rowCount();
 
 $i=1;
 foreach($result as $row) {
-    echo '<tr>';
     $id = $row['id'];
     $name = $row['user_name'];
     $status = $row['status'];
@@ -40,7 +42,9 @@ foreach($result as $row) {
    	if( $row2['stock_remaining'] < $row2['quantity'])
             $valid = 0;
     }
-
+    if($filter == "Error" && $valid)
+	continue;
+    echo '<tr>';
     echo '<td id= n' . $i .'>' . $id . '</td>';
     echo '<td>' . $name . '</td>';
     if($status == "Pending" and $valid)

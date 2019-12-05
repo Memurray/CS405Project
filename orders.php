@@ -14,24 +14,44 @@
 include('header.php');
 headerBar("Customer Orders","staff");
 ?>
+<div class="search-container">
+      <input type="text" class="textbox" placeholder="Search.." name="search" id="searchBox">
+      <button id="buttonSearchBox"><i class="fa fa-search"></i></button>
+  </div>
+<br>
 
 <b>Status Filter:</b>
   <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All 
-  <input type="radio" name="cat" class="select category" id="radioPending" value="Pending" > Pending<br><br>
+  <input type="radio" name="cat" class="select category" id="radioPending" value="Pending" > Pending
+  <input type="radio" name="cat" class="select category" id="radioError" value="Error" >Inventory Issue<br><br>
+
+<label>Sort By: <select class="select" id="sort">
+<option value="id desc">Order Number: Desc</option>
+<option value="id asc">Order Number: Asc</option>
+<option value="placed_at desc">Time (New->Old)</option>
+<option value="placed_at asc">Time (Old->New)</option>
+<option value="price desc">Price: Desc</option>
+<option value="price asc">Price: Asc</option>
+</select></label>
+
+<br>
+<br>
+
 
 <div class="filter">
 </div>
-</table>
 
 <script>
-var category = "All";
+var category = $("input[name=cat]:checked").val();
+var sort = document.getElementById("sort").value;
+var searchInput = document.getElementById("searchBox").value;
 $(document).ready(function(){
     filter();
     function filter(){
 	$.ajax({
             url:"buildOrderDisplay.php",
             method:"POST",
-            data:{category:category},
+            data:{category:category,sort:sort, searchInput:searchInput},
             success:function(data){
 	     $('.filter').html(data);
             }
@@ -39,6 +59,13 @@ $(document).ready(function(){
 	}
     $('.select').click(function(){
 	var changed = false;
+
+	var tempSort = $("#sort :selected").val();
+    	if(tempSort != sort){
+	    sort=tempSort;
+            changed = true;
+    	}
+
 	var tempCat = $("input[name=cat]:checked").val()
 	if(tempCat != category){
 		category=tempCat;
@@ -48,6 +75,19 @@ $(document).ready(function(){
 		filter();
 	}
     });
+
+    $("#buttonSearchBox").click(function(){
+	searchSubmit();
+    });
+    $("#searchBox").keypress(function(){
+  	if ( event.which == 13 ) {
+    	    searchSubmit();
+        }
+    });
+    function searchSubmit(){
+   	searchInput = document.getElementById("searchBox").value;
+	filter();
+    }
 
     $('body').on('click', '.statusEdit', function (){
 	var clickRow = $(this).attr('val');

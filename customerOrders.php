@@ -20,19 +20,32 @@ headerBar("Your Orders","customer");
   <input type="radio" name="cat" class="select category" id="radioPending" value="Pending" > Pending
   <input type="radio" name="cat" class="select category" id="radioCancelled" value="Cancelled" > Cancelled<br><br>
 
+<label>Sort By: <select class="select" id="sort">
+<option value="id desc">Order Number: Desc</option>
+<option value="id asc">Order Number: Asc</option>
+<option value="placed_at desc">Time (New->Old)</option>
+<option value="placed_at asc">Time (Old->New)</option>
+<option value="price desc">Price: Desc</option>
+<option value="price asc">Price: Asc</option>
+<option value="money_saved desc">Money Saved: Desc</option>
+<option value="money_saved asc">Money Saved: Asc</option>
+</select></label>
+
+<br>
+<br>
 <div class="filter">
 </div>
-</table>
 
 <script>
-var category = "All";
+var category = $("input[name=cat]:checked").val()
+var sort = document.getElementById("sort").value;
 $(document).ready(function(){
     filter();
     function filter(){
 	$.ajax({
             url:"buildCustomerOrders.php",
             method:"POST",
-            data:{category:category},
+            data:{category:category,sort:sort},
             success:function(data){
 	     $('.filter').html(data);
             }
@@ -40,6 +53,13 @@ $(document).ready(function(){
 	}
     $('.select').click(function(){
 	var changed = false;
+
+    	var tempSort = $("#sort :selected").val();
+    	if(tempSort != sort){
+	    sort=tempSort;
+            changed = true;
+    	}
+
 	var tempCat = $("input[name=cat]:checked").val()
 	if(tempCat != category){
 		category=tempCat;

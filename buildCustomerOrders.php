@@ -9,6 +9,7 @@ echo '<td width="120px"><b>Price ($)</b></td>';
 echo '<td width="120px"><b>You Saved ($)</b></td></tr>';
 
 $filter = $_POST["category"];
+$sort = $_POST["sort"];
 $uName = $_COOKIE["CS405_Username"];
 
 if($filter == "All"){
@@ -19,7 +20,7 @@ else{
 	$query = "SELECT * FROM orders AS A LEFT JOIN (SELECT id AS vid, 1 as valid FROM orders where status!='Cart' AND placed_at > now()- INTERVAL 1 DAY) AS B on A.id = B.vid WHERE user_name ='";
 	$query = $query . $uName . "' AND status = '" . $filter . "'";
 }
-$query .= " ORDER BY placed_at desc";
+$query .= " ORDER BY $sort";
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
