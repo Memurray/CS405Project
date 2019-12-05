@@ -12,7 +12,7 @@
 <?php
 include('header.php');
 include('dbConnect.php');
-new headerBar("Cart","customer");
+headerBar("Cart","customer");
 $uName = $_COOKIE["CS405_Username"];
 
 $query = 'SELECT id from orders where status="cart" and user_name="' . $uName;
@@ -50,7 +50,7 @@ else {
     $sum = $sum + $price * $quantity;
     $save = $save + $saveItem * $quantity;
     echo '<tr><td id= n' . $i .'>' . $name . '</td>';
-    echo '<td> <input type="number" style="width: 65px" onkeypress="return event.charCode >= 48" value =' . $quantity . ' min="0" id = t' . $i .  '><button class="quantityEdit" val = ' . $i . '>Edit</button></td>';
+    echo '<td> <input type="number" class="cartBox" style="width: 65px" onkeypress="return event.charCode >= 48" value =' . $quantity . ' min="0" id = t' . $i .  '><button class="quantityEdit" val = ' . $i . '>Edit</button></td>';
     echo '<td>' . number_format($realPrice,2) . '</td>';
     echo '<td class="highlight">' . number_format($realPrice*$quantity,2) . '</td>';
     echo '</tr>';
@@ -88,6 +88,27 @@ $(document).ready(function(){
             }
         });
     });
+
+
+    $(".cartBox").keypress(function(){
+      if (event.which == 13 ) {
+        var enterID = $(this).attr('Id');
+        var clickRow = enterID.replace("t", "");
+	var nameID = "n" + clickRow;
+        var textID = "t" + clickRow;
+        var name = document.getElementById(nameID).innerHTML;
+        var quantity = document.getElementById(textID).value;
+        $.ajax({
+            url:"editCart.php",
+            method:"POST",
+            data:{quantity:quantity, name:name,id:id},
+            complete: function(data){
+                window.location = './cart.php';
+            }
+        });
+      }
+    });
+
 
 
     $('.order').click(function(){

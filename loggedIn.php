@@ -9,7 +9,7 @@
 <div class="main">
 <?php 
 include('header.php');
-new headerBar("Login Welcome","");
+headerBar("Login Welcome","");
 $cookie_name1 = "CS405_Username";
 $cookie_name2 = "CS405_Usertype";
  if(!isset($_COOKIE[$cookie_name1])) {

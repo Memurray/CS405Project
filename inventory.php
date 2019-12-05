@@ -22,7 +22,7 @@ margin-left: 100px;
 <div class="main">
 <?php
 include('header.php');
-new headerBar("Inventory Management","staff");
+headerBar("Inventory Management","staff");
 $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 ?>
 
@@ -96,11 +96,15 @@ if($usertype == "manager" or $usertype == "admin"){
 </div>
 
 <script>
-var sort = "Name asc";
-var timescale = "All";
 var usertype = "<?php echo $usertype ?>";
-var filterType = "All";
-var searchInput = "";
+
+var timescale = "All";
+if($("#sales_window :selected").val() != null)
+    timescale = $("#sales_window :selected").val();
+var sort = $("#sort :selected").val();
+var filterType = $("#filterID :selected").val();
+var searchInput = document.getElementById("searchBox").value;
+
 $(document).ready(function(){
     filter();
     function filter(){
@@ -130,6 +134,27 @@ $(document).ready(function(){
         });
     });
 
+   $('body').on('keypress', '.stockBox', function (){
+     if ( event.which == 13 ) {
+	var enterID = $(this).attr('Id');
+ 	var clickRow = enterID.replace("t", "");
+	var nameID = "n" + clickRow;
+        var textID = "t" + clickRow;
+        var name = document.getElementById(nameID).innerHTML;
+        var stock = document.getElementById(textID).value;
+        $.ajax({
+            url:"editStock.php",
+            method:"POST",
+            data:{stock:stock, name:name},
+            complete: function(data){
+                filter();
+            }
+        });
+
+      }
+    });
+
+
     $('body').on('click', '.promoEdit', function (){
         var clickRow = $(this).attr('val');
         var nameID = "n" + clickRow;
@@ -145,6 +170,27 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('body').on('keypress', '.promoBox', function (){
+     if ( event.which == 13 ) {
+        var enterID = $(this).attr('Id');
+        var clickRow = enterID.replace("pr", "");
+	var nameID = "n" + clickRow;
+        var promoID = "pr" + clickRow;
+        var name = document.getElementById(nameID).innerHTML;
+        var promo = document.getElementById(promoID).value;
+        $.ajax({
+            url:"editPromo.php",
+            method:"POST",
+            data:{promo:promo, name:name},
+            complete: function(data){
+                filter();
+            }
+        });
+      }
+    });
+
+
 
     $('.select').click(function(){
 	var changed = false;
