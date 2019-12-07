@@ -1,34 +1,3 @@
-<style>
-.tooltip {
-  font-size: 18px;
-  position: relative;
-  display: inline-block;
-  float: right;
-  padding-left: 4px;
-  padding-right: 4px;
-  margin-right: 3px;
-  background: red;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 200px;
-  background-color: #ffcccc;
-  border:2px solid black;
-  color: black;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px;
-  position: absolute;
-  z-index: 1;
-  top: -5px;
-  left: 105%;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-}
-</style>
 <?php
 $sort = $_POST["sort"];
 $time = $_POST["timescale"];

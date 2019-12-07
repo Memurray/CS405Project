@@ -47,6 +47,10 @@ border-radius:20px 20px 0px 0px;
   font-size: 18px;
 }
 
+.card button.tooltipB{
+background:red;
+}
+
 .card button:hover {
   background-color: #808080;
 }
@@ -102,10 +106,19 @@ foreach($result as $row) {
 	$printPrice = $finalPrice;
     else
 	$printPrice = $finalPrice . "  ($rate% Off)";
-    echo '<h2 id= n' . $i .'>' . $name . '</h2>';
+    if($row['stock_remaining'] == 0){
+        echo '<h2 id= n' . $i .'>' . $name . '</h2>';
+    }
+    else
+  	echo '<h2 id= n' . $i .'>' . $name . '</h2>';
     echo "<img src=$image>";
     echo "<p><b>$$printPrice</b></p>";
-    echo '<p> <input type="number" class="cartIn" onkeypress="return event.charCode >= 48" value ="1" min="1" id = t' . $i .  '><button class="buy" val = ' . $i . '>Add to cart</button></p>';
+    echo '<p><input type="number" class="cartIn" onkeypress="return event.charCode >= 48" value ="1" min="1" id = t' . $i .  '>';
+    if($row['stock_remaining'] == 0){
+    	echo '<button class="buy tooltipB" val = ' . $i . '>Add to cart <span class="tooltiptext">Out of stock</span></button></p>';
+    }
+    else
+	echo '<button class="buy" val = ' . $i . '>Add to cart</button></p>';
     $i = $i+1;
     echo "</div>";
 }
