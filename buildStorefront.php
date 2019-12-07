@@ -106,11 +106,7 @@ foreach($result as $row) {
 	$printPrice = $finalPrice;
     else
 	$printPrice = $finalPrice . "  ($rate% Off)";
-    if($row['stock_remaining'] == 0){
-        echo '<h2 id= n' . $i .'>' . $name . '</h2>';
-    }
-    else
-  	echo '<h2 id= n' . $i .'>' . $name . '</h2>';
+    echo '<h2 id= n' . $i .'>' . $name . '</h2>';
     echo "<img src=$image>";
     echo "<p><b>$$printPrice</b></p>";
     echo '<p><input type="number" class="cartIn" onkeypress="return event.charCode >= 48" value ="1" min="1" id = t' . $i .  '>';
