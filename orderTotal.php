@@ -1,4 +1,6 @@
 <?php
+// Importable function for calculating price of an order and money_saved
+
 function orderTotal($order_id) {
     include('dbConnect.php');
     $query = 'SELECT name,price,promotion_rate,quantity FROM order_items, products WHERE product_name=name AND order_id = ' . $order_id;

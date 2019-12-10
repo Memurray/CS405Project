@@ -24,7 +24,7 @@ include('header.php');
 headerBar("Store","customer");
 ?>
 <body>
-
+<!-- Build user input options -->
 <div class="search-container">
       <input type="text" class="textbox" placeholder="Search.." name="search" id="searchBox">
       <button id="buttonSearchBox"><i class="fa fa-search"></i></button>
@@ -55,7 +55,7 @@ var filterType = $("#filterID :selected").val();
 var searchInput = document.getElementById("searchBox").value;
 $(document).ready(function(){
     buildTable();
-    function buildTable(){
+    function buildTable(){  //builds storefront page based on user input
         $.ajax({
             url:"buildStorefront.php",
             method:"POST",
@@ -65,7 +65,7 @@ $(document).ready(function(){
             }
         });
     }
-
+    // If add to cart button pressed, runs add to cart script
     $('body').on('click', '.buy', function (){
 	var clickRow = $(this).attr('val');
 	var nameID = "n" + clickRow;
@@ -97,6 +97,7 @@ function searchSubmit(){
 	buildTable();
 }
 
+// If user selection changes, regenerate the storefront
 $('.select').click(function(){
     var changed = false;
 

@@ -15,11 +15,13 @@ include('header.php');
 headerBar("Your Orders","customer");
 ?>
 
+<!-- Add filter buttons -->
 <b>Status Filter:</b>
   <input type="radio" name="cat" class="select category" id="radioAllCategories" value="All"  checked > All Purchased 
   <input type="radio" name="cat" class="select category" id="radioPending" value="Pending" > Pending
   <input type="radio" name="cat" class="select category" id="radioCancelled" value="Cancelled" > Cancelled<br><br>
 
+<!-- Add option dropdown -->
 <label>Sort By: <select class="select" id="sort">
 <option value="id desc">Order Number: Desc</option>
 <option value="id asc">Order Number: Asc</option>
@@ -40,7 +42,9 @@ headerBar("Your Orders","customer");
 var category = $("input[name=cat]:checked").val()
 var sort = document.getElementById("sort").value;
 $(document).ready(function(){
-    filter();
+    filter();  //Generate items on page load
+
+    // script called by ajax builds the table displayed in pre-allocated div
     function filter(){
 	$.ajax({
             url:"buildCustomerOrders.php",
@@ -51,6 +55,8 @@ $(document).ready(function(){
             }
         });
 	}
+
+    // If a button is clicked, check to see if it has changed
     $('.select').click(function(){
 	var changed = false;
 
@@ -65,11 +71,13 @@ $(document).ready(function(){
 		category=tempCat;
 		changed = true;
 	}
+    	// If changed, regen table
 	if(changed){
 		filter();
 	}
     });
 
+    // If cancel order button is clicked, run cancelOrder script
     $('body').on('click', '.cancelOrder', function (){
 	var clickRow = $(this).attr('val');
 	var idLookup = "n" + clickRow;
@@ -84,6 +92,7 @@ $(document).ready(function(){
         });
     });
 
+    // If a restore button is clicked, run restoreOrder script 
     $('body').on('click', '.restoreOrder', function (){
         var clickRow = $(this).attr('val');
         var idLookup = "n" + clickRow;
@@ -97,7 +106,6 @@ $(document).ready(function(){
             }
         });
     });
-
 
 });
 </script>

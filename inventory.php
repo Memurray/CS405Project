@@ -26,6 +26,8 @@ headerBar("Inventory Management","staff");
 $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 ?>
 
+
+<!-- Build add new item form -->
 <div class="add">
 <h3> Add New Item </h3>
 <table border="1">
@@ -51,6 +53,8 @@ $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 </div>
 <br>
 
+
+<!-- Build page filtering elements -->
 <h3>Current Inventory</h3>
 <div class="search-container">
       <input type="text" class="textbox" placeholder="Search.." name="search" id="searchBox">
@@ -64,6 +68,7 @@ $usertype = strtolower($_COOKIE["CS405_Usertype"]);
 <option value="price asc">Price: Asc</option>
 <option value="price desc">Price: Desc</option>
 <?php
+// Add extra column if manager/admin
 if($usertype == "manager" or $usertype == "admin"){
     echo '<option value="total_sales asc">Sales: Asc</option>
       <option value="total_sales desc">Sales: Desc</option>
@@ -79,7 +84,9 @@ if($usertype == "manager" or $usertype == "admin"){
 </select></label>
 
 
+
 <?php
+// Add extra downdown selection menu if manager/admin
 if($usertype == "manager" or $usertype == "admin"){
     echo '<label class="pad">Sales Window: <select class="select" id="sales_window">
       <option value="All">All Time</option>
@@ -97,7 +104,6 @@ if($usertype == "manager" or $usertype == "admin"){
 
 <script>
 var usertype = "<?php echo $usertype ?>";
-
 var timescale = "All";
 if($("#sales_window :selected").val() != null)
     timescale = $("#sales_window :selected").val();
@@ -106,8 +112,9 @@ var filterType = $("#filterID :selected").val();
 var searchInput = document.getElementById("searchBox").value;
 
 $(document).ready(function(){
-    filter();
-    function filter(){
+    filter(); 
+
+    function filter(){ //Send user selection off to script to build inventory table
         $.ajax({
             url:"buildInventory.php",
             method:"POST",
@@ -117,7 +124,7 @@ $(document).ready(function(){
             }
         });
     }
-
+    // If stock edit clicked, run update operation then call filter to rebuild table
     $('body').on('click', '.stockEdit', function (){
 	var clickRow = $(this).attr('val');
 	var nameID = "n" + clickRow;
@@ -134,6 +141,7 @@ $(document).ready(function(){
         });
     });
 
+   // Same as above, just variation for pressing enter instead of clicking
    $('body').on('keypress', '.stockBox', function (){
      if ( event.which == 13 ) {
 	var enterID = $(this).attr('Id');
@@ -154,7 +162,7 @@ $(document).ready(function(){
       }
     });
 
-
+    // If promo edit button clicked, run update operation and rebuild table
     $('body').on('click', '.promoEdit', function (){
         var clickRow = $(this).attr('val');
         var nameID = "n" + clickRow;
@@ -171,6 +179,7 @@ $(document).ready(function(){
         });
     });
 
+    // Same as above but for pressing enter
     $('body').on('keypress', '.promoBox', function (){
      if ( event.which == 13 ) {
         var enterID = $(this).attr('Id');
@@ -191,7 +200,7 @@ $(document).ready(function(){
     });
 
 
-
+    // If user selection changes, rebuild table
     $('.select').click(function(){
 	var changed = false;
 	var tempSales = $("#sales_window :selected").val();
@@ -216,22 +225,25 @@ $(document).ready(function(){
 	}
     });
 
-
+    // If search button clicked
     $("#buttonSearchBox").click(function(){
 	searchSubmit();
     });
 
+    // If enter is pressed while searchbox is active
     $("#searchBox").keypress(function(){
   	if ( event.which == 13 ) {
     	    searchSubmit();
         }
     });
+
+    // Rebuild table with search input
     function searchSubmit(){
    	searchInput = document.getElementById("searchBox").value;
 	filter();
     }
 
-
+   // If create new item button is pressed, validate then insert item
    $('.addButton').click(function(){
    	var name = document.getElementById("inName").value;
         var price = document.getElementById("inPrice").value;

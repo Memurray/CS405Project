@@ -15,16 +15,23 @@ include('dbConnect.php');
 headerBar("Cart","customer");
 $uName = $_COOKIE["CS405_Username"];
 
+// get the id of the order that is the current users cart
 $query = 'SELECT id from orders where status="cart" and user_name="' . $uName;
 $query .= '";';
 $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
 $total_row = $statement->rowCount();
+
+// If there is no cart yet
 if ($total_row == 0)
   echo "<p> There is nothing in your cart </p>";
+
+// If there are multiple cart (should not be possible, but here for debug)
 else if ($total_row >= 2)
   echo "<p> Error: Multiple incomplete orders detected </p>";
+
+// Otherwise, build table
 else {
   $id = $result[0]['id'];
   echo '<table border="1"><tr>';
@@ -40,6 +47,8 @@ else {
   $sum = 0;
   $save = 0;
   $i=1;
+
+  // For each item in cart display information
   foreach($result as $row){
     $name = $row['product_name'];
     $quantity = $row['quantity'];
@@ -73,6 +82,7 @@ var price = "<?php echo $sum-$save ?>";
 var save = "<?php echo $save ?>";
 
 $(document).ready(function(){
+    // If a quantity edit button is clicked, grab vars and call editCart though ajax to update database
     $('.quantityEdit').click(function(){
 	var clickRow = $(this).attr('val');
 	var nameID = "n" + clickRow;
@@ -89,7 +99,7 @@ $(document).ready(function(){
         });
     });
 
-
+    // If press the enter key inside of the quantity edit field, update cart
     $(".cartBox").keypress(function(){
       if (event.which == 13 ) {
         var enterID = $(this).attr('Id');
@@ -110,7 +120,7 @@ $(document).ready(function(){
     });
 
 
-
+    // If click submit order button, ajax call purchasing code to update database
     $('.order').click(function(){
 	$.ajax({
             url:"purchaseCart.php",

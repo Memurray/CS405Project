@@ -14,6 +14,8 @@ $usernameError = "";
 $passwordError = "";
 $bottomError = "";
 $success = "";
+
+// If got to this page by post, check if all fields are filled
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $valid = 1;
     if (empty($_POST['username'])){
@@ -24,7 +26,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $passwordError = "Password is required";
 	$valid = 0;
     }
+    // If all fields present
     if($valid) {
+ 		// Check if username exists
                 $username = trim($_POST['username']);
 		$password = trim($_POST['password']);
  		$usernameCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
@@ -33,10 +37,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$statement->execute();
 		$result = $statement->fetchAll();
 		$total_row = $statement->rowCount();
-            	if ($total_row == 0) {
-		    $bottomError = "There is no employee account by this name";
+            	if ($total_row == 0) { //Print error if there is user by this name
+ 		    $bottomError = "There is no employee account by this name";
 		}
-		else{
+		else{  //check if password is correct
 		    $passwordCheck = "SELECT * FROM users WHERE Name = '" . $username . "'";
 		    $passwordCheck = $passwordCheck . " AND Password = '" . $password . "'";
 	            $passwordCheck = $passwordCheck . " AND user_type IN ('staff','manager', 'admin')";
@@ -44,10 +48,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                     $statement->execute();
                     $result = $statement->fetchAll();
                     $total_row = $statement->rowCount();
-                    if ($total_row == 0) {
+                    if ($total_row == 0) { //if wrong password, show error
 		    	$bottomError = "Password is not correct";
 		    }
-		    else{
+		    else{  //if all good, save login to cookies, move user to login confirmation page
 			setcookie("CS405_Username", $username, time()+3600, '/');
 			setcookie("CS405_Usertype", $result[0]['user_type'], time()+3600, '/');
 			header("Location: ./loggedIn.php");
@@ -57,6 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<!-- Build login form -->
 <form class="form-style" id="landing" method="post">
 <ul>
 <li>

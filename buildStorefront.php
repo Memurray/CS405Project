@@ -75,6 +75,8 @@ $filter = $_POST["filterType"];
 $searchInput = $_POST["searchInput"];
 $uType = strtolower($_COOKIE["CS405_Usertype"]);
 include('dbConnect.php');
+
+// Get all products that match user selections
 $query = "SELECT * FROM products";
 $query .= " WHERE (name LIKE '%" . $searchInput . "%'";
 $query .= " OR category LIKE '%" . $searchInput . "%')";
@@ -82,6 +84,7 @@ if($filter != "All"){
     $query .= " AND category = '" . $filter;
     $query .= "'";
 }
+// In the order they chose
 $query .= " ORDER BY " . $sort . ", name asc;";
 $statement = $connect->prepare($query);
 $statement->execute();
@@ -90,6 +93,8 @@ $total_row = $statement->rowCount();
 
 echo '<div id="wrapper" class="filter">';
 
+
+// For each product build a card element to display the item
 $i=1;
 foreach($result as $row) {
     echo '<div class="card">';
@@ -110,6 +115,8 @@ foreach($result as $row) {
     echo "<img src=$image>";
     echo "<p><b>$$printPrice</b></p>";
     echo '<p><input type="number" class="cartIn" onkeypress="return event.charCode >= 48" value ="1" min="1" id = t' . $i .  '>';
+
+    // Change button color if the product is out of stock
     if($row['stock_remaining'] == 0){
     	echo '<button class="buy tooltipB" val = ' . $i . '>Add to cart <span class="tooltiptext">Out of stock</span></button></p>';
     }

@@ -18,6 +18,9 @@ headerBar("Product Graph","manager");
 
 $name = $_GET["name"];
 
+//********************************
+// Gather all data to be graphed
+//********************************
 $query = "SELECT * FROM products;";
 $statement = $connect->prepare($query);
 $statement->execute();
@@ -59,8 +62,11 @@ $statement = $connect->prepare($query);
 $statement->execute();
 $result = $statement->fetchAll();
 $product_365 = $result[0]["total_sales"];
+//************************************
 
 
+// Prevent divide by 0 issues
+//Otherwise, calculate relative sales
 if($all_7 == 0)
    $out_7 = 0;
 else
@@ -76,7 +82,7 @@ if($all_365 == 0)
 else
    $out_365 = $product_365/($all_365/$count);
 
-
+// Fill array with data to be graphed
 $dataPoints = array(
         array("label"=> "Last 7 Days", "y"=> $out_7),
         array("label"=> "Last 30 Days", "y"=> $out_30),
@@ -87,6 +93,7 @@ $max = max($out_7,$out30,$out_365,1)*1.15;
 ?>
 
 <script>
+// Render graph
 window.onload = function () {
 var name = "<?php echo $name ?>";
 var maxY = "<?php echo $max ?>";
@@ -113,7 +120,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
             ]
 	},
 	data: [{
-		type: "column", //change type to bar, line, area, pie, etc
+		type: "column", 
 		indexLabel: "{y}", //Shows y value on all Data Points
 		indexLabelFontSize: 16,
 		indexLabelPlacement: "inside",
